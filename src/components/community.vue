@@ -10,29 +10,7 @@ import HomeHeader from '../components/pages/header'
 import HomeContent from '../components/pages/content'
 export default {
   data () {
-    return {
-      building: [
-        {
-          id: 1,
-          building: '1栋',
-          name: 'a小区'
-        },
-        {
-          id: 2,
-          building: '2栋',
-          name: 'b小区'
-        },
-        {
-          id: 3,
-          building: '3栋',
-          name: 'c小区'
-        },
-        {
-          id: 4,
-          building: '4栋',
-          name: 'd小区'
-        }]
-    }
+    return {}
   },
   components: {
     HomeHeader,
@@ -41,7 +19,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
 html,
 body {
