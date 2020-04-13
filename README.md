@@ -1,6 +1,6 @@
 # guixi_project
 
-> y
+> A Vue.js project
 
 ## Build Setup
 

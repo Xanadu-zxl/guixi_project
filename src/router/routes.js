@@ -7,8 +7,13 @@ export default [
     component: home
   },
   {
-    path: '/community',
-    name: 'community',
-    component: () => import(/* webpackChunkName:'community' */'@/components/community')
+    path: '/building',
+    name: 'building',
+    component: () => import(/* webpackChunkName:'community' */'@/components/building')
+  },
+  {
+    path: '/unit',
+    name: 'unit',
+    component: () => import(/* webpackChunkName:'community' */'@/components/unit')
   }
 ]

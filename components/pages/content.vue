@@ -9,7 +9,7 @@
           >
             <i class="icon-icon_dong"></i>
             {{item.id}}
-            <span class="building-name">{{item.building}}</span>
+            <span class="building-name">{{item.id}}栋</span>
           </a>
         </div>
       </div>
@@ -24,33 +24,31 @@ export default {
       building: [
         {
           id: 1,
-          building:"1栋",
           name: 'a小区'
         },
         {
           id: 2,
-          building:"1栋",
           name: 'b小区'
         },
         {
           id: 3,
-          building:"1栋",
           name: 'c小区'
         },
         {
           id: 4,
-          building:"1栋",
           name: 'd小区'
         },
         {
           id: 5,
-          building:"1栋",
           name: 'e小区'
         },
         {
           id: 6,
-          building:"1栋",
           name: 'f小区'
+        },
+        {
+          id: 7,
+          name: 'g小区'
         }]
 
     }

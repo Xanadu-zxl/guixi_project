@@ -1,54 +1,64 @@
 <template>
-  <div class="bg">
-    <home-header></home-header>
-    <home-content></home-content>
-  </div>
+  <home-header :companyName="baseCompany" :fields="homes" class="bg">
+    <template slot="communityBreadcrumns">
+      <div class="community-name">{{ name }}</div>
+    </template>
+    <template slot="fieldsList">
+      <div class="home-building">
+        <template v-for="home in homes">
+          <router-link
+            :key="home.id"
+            :to="{ name: 'building', query: { name:name, building: home.id}}"
+            class="community-home-body-item"
+          >
+            <i class="icon-icon_dong"></i>
+            <span class="building-name">{{ home.building }}</span>
+          </router-link>
+        </template>
+      </div>
+    </template>
+  </home-header>
 </template>
 
 <script>
-import HomeHeader from '../components/pages/header'
-import HomeContent from '../components/pages/content'
+import HomeHeader from './pages/header'
 export default {
   data () {
     return {
-      building: [
+      name: '完美小区',
+      homes: [
         {
           id: 1,
           building: '1栋',
-          name: 'a小区'
         },
         {
           id: 2,
           building: '2栋',
-          name: 'b小区'
         },
         {
           id: 3,
           building: '3栋',
-          name: 'c小区'
         },
         {
           id: 4,
           building: '4栋',
-          name: 'd小区'
+
         }]
     }
   },
   components: {
     HomeHeader,
-    HomeContent
-  }
+    // HomeContent
+  },
+  created () {
+    // this.doRequest()
+    document.title = '出租房屋公示'
+  },
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style >
-html,
-body {
-  font-size: 20px;
-  height: 100%;
-}
-
+<style scoped>
 .bg {
   position: absolute;
   background: url(~@/assets/img/image_bg.png) no-repeat;
@@ -65,10 +75,43 @@ body {
   padding: 0rem 1rem;
 }
 
+.community-name {
+  margin-top: 0.4rem;
+  font-size: 0.7rem;
+  color: #bdbdbd;
+  line-height: 1.5;
+  text-align: right;
+}
+
 .home-building {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   margin-right: -3%;
+}
+
+.community-home-body-item {
+  height: 4.8rem;
+  flex: 0 0 22%;
+  background-color: white;
+  padding: 0.6rem 0.4rem 0.4rem;
+  box-sizing: border-box;
+  border-radius: 0.3rem;
+  margin-bottom: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.icon-icon_dong {
+  background: url('~@/assets/font/icon_dong.svg') no-repeat;
+  height: 1.25rem;
+}
+
+.building-name {
+  font-size: 0.7rem;
+  color: #8d8d8d;
+  line-height: 1.5;
+  font-weight: 500;
 }
 </style>
