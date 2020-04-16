@@ -2,7 +2,7 @@
   <home-header :companyName="baseCompany" class="bg">
     <template slot="communityBreadcrumns">
       <div class="community-breadcrumns">
-        <router-link :to="{ name: 'home',query:{ name: name, building: building}}">{{this.$route.query.name}}</router-link>&gt;
+        <router-link :to="{ name: 'home',query:{ name: name, building: unit}}">{{this.$route.query.name}}</router-link>&gt;
         <span>{{ this.$route.query.building }}栋</span>
       </div>
     </template>
@@ -11,7 +11,7 @@
         <template v-for="(building, index) in buildings">
           <router-link
             :key="index"
-            :to="{ name: 'unit', query: { name:name, id: building.id}}"
+            :to="{ name: 'unit', query: { name:name, building: unit, id: building.id }}"
             class="community-home-body-item"
           >
             <i class="icon-icon_danyuan"></i>
@@ -37,7 +37,8 @@ export default {
     return {
       name: '',
       routes: '',
-      building: '',
+      unit: '',
+      query:'',
       buildings: [{
         id: 1,
         building: '1栋',
@@ -68,10 +69,10 @@ export default {
 
   methods: {
     doRequst () {
-      let data = this.$route.query
-      this.name = data.name
-      this.building = data.building
-      console.log(data)
+      let query = this.$route.query
+      this.name = query.name
+      this.unit = query.building
+      console.log(query)
 
       //     axios.get(this.baseUrl + 'building?' + this.getQueryString())
       //       .then(res => {
