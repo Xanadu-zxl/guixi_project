@@ -5,7 +5,7 @@
         <div class="community-breadcrumns">
           <!-- <div class="community-name">{{ home }}</div> -->
           <router-link :to="{ name: 'home'}">{{name}}</router-link>&gt;
-          <router-link :to="{name: 'building', query: { name: name, building: building ,id: id}}">{{ building}}栋</router-link>&gt;
+          <router-link :to="{name: 'building', query: { name: name, building: building, id: id}}">{{ building}}栋</router-link>&gt;
           <span>{{ id }}单元</span>
         </div>
       </template>
@@ -65,6 +65,7 @@ export default {
     return {
       building: '',
       name: '',
+      query:'',
       id:'',
       floors: [
         {
@@ -120,10 +121,11 @@ export default {
 
   methods: {
     doRequest () {
-      let data = this.$route.query
-      this.name = data.name
-      this.id = data.id
-      console.log(data)
+      let query = this.$route.query
+      this.building = query.building
+      this.name = query.name
+      this.id = query.id
+      console.log(query)
 
       //   axios.get(this.baseUrl + 'unit?' + this.getQueryString())
       //     .then(res => {
@@ -147,7 +149,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .bg {
   position: absolute;
