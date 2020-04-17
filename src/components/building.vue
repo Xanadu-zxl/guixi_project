@@ -130,9 +130,13 @@ export default {
   justify-content: space-between;
 }
 
-.icon-icon_danyuan {
-  background: url('~@/assets/font/icon_danyuan.svg') no-repeat;
-  height: 1.25rem;
+.icon-icon_danyuan {  
+  background-image: linear-gradient(to right, #f08200, #f45e06);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-align: left;
+  -webkit-text-fill-color: transparent;
+
 }
 
 .building-name {
