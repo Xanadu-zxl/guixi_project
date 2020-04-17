@@ -5,7 +5,9 @@
         <div class="community-breadcrumns">
           <!-- <div class="community-name">{{ home }}</div> -->
           <router-link :to="{ name: 'home'}">{{name}}</router-link>&gt;
-          <router-link :to="{name: 'building', query: { name: name, building: building, id: id}}">{{ building}}栋</router-link>&gt;
+          <router-link
+            :to="{name: 'building', query: { name: name, building: building, id: id}}"
+          >{{ building}}栋</router-link>&gt;
           <span>{{ id }}单元</span>
         </div>
       </template>
@@ -13,22 +15,41 @@
         <div class="room-table">
           <div class="datable-table-container">
             <div class="fixed-table">
-              <div class="scroll-container" ref="fixedScrollContainer">
+              <div @scroll="scrollFixed" class="scroll-container" ref="fixedScrollContainer">
                 <table>
+                  <colgroup>
+                    <col width="10" />
+                  </colgroup>
                   <tbody>
                     <template v-for="(item, index) in floors">
                       <tr :key="index">
-                        <td class="column-first">{{ item.floor}}楼</td>
-                        <td :key="index" v-for="(room,index) in floordata">
-                          <span>
-                            <span class="room-number">{{room.room}}</span>
-                            <i :class="getStatusClass(room.status)" class="room-leave-unused"></i>
-                          </span>
-                        </td>
+                        <td class="column-first">{{ item.floor.id}}楼</td>
                       </tr>
                     </template>
                   </tbody>
                 </table>
+              </div>
+            </div>
+            <div class="body-table">
+              <div class="body-table-wrapper">
+                <div @scroll="scrollBody" class="scroll-container" ref="bodyScrollContainer">
+                  <table>
+                    <tbody>
+                      <template v-for="(item, index) in floors">
+                        <tr :key="index">
+                          <template v-for="(room, index) in item.floor.floordata">
+                            <td :key="index">
+                              <span>
+                                <span class="room-number">{{room.room}}</span>
+                                <i :class="getStatusClass(room.status)"></i>
+                              </span>
+                            </td>
+                          </template>
+                        </tr>
+                      </template>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -47,11 +68,15 @@
             </div>
           </div>
         </div>
-        <button class="error-correction-button">纠错</button>
+        <button @click="openModal" class="error-correction-button">纠错</button>
       </template>
     </home-header>
-
-    <!-- <Modal company="智慧桂溪" extendClass="tip-modal" ref="modalRef"></Modal> -->
+    <div  class="modal" v-if="opened">
+      <div @click.stop  class="content">
+        <p>请关注微信公众号【{{ company }}】</p>
+        <p>以便接收纠错反馈。</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -59,54 +84,239 @@
 
 <script>
 import HomeHeader from './pages/header'
+import Modal from './modal'
+import { _ } from 'vue-underscore'
+
 
 export default {
   data () {
     return {
+      company:'智慧桂溪',
       building: '',
       name: '',
-      query:'',
-      id:'',
+      query: '',
+      id: '',
+      opened: false,
+      status: '',
+      redirectUrl: '',
+      ignoreScrollEvent: false,
+      startY: 0,
       floors: [
         {
-          floor: '1',
+          floor: {
+            id: '1',
+            floordata: [
+              {
+                room: '01',
+                status: '闲置'
+              },
+              {
+                room: '02',
+                status: '自用'
+              },
+              {
+                room: '03',
+                status: '自用'
+              },
+              {
+                room: '04',
+                status: '自用'
+              }
 
+            ]
+          },
         },
         {
-          floor: '2',
+          floor: {
+            id: '1',
+            floordata: [
+              {
+                room: '01',
+                status: '闲置'
+              },
+              {
+                room: '02',
+                status: '闲置'
+              },
+              {
+                room: '03',
+                status: '闲置'
+              },
+              {
+                room: '04',
+                status: '闲置'
+              }
+
+            ]
+          },
+        }, {
+          floor: {
+            id: '1',
+            floordata: [
+              {
+                room: '01',
+                status: '闲置'
+              },
+              {
+                room: '02',
+                status: '闲置'
+              },
+              {
+                room: '03',
+                status: '闲置'
+              },
+              {
+                room: '04',
+                status: '闲置'
+              }
+
+            ]
+          },
         },
         {
-          floor: '3',
+          floor: {
+            id: '1',
+            floordata: [
+              {
+                room: '01',
+                status: '闲置'
+              },
+              {
+                room: '02',
+                status: '闲置'
+              },
+              {
+                room: '03',
+                status: '闲置'
+              },
+              {
+                room: '04',
+                status: '闲置'
+              }
+
+            ]
+          },
         },
         {
-          floor: '4',
+          floor: {
+            id: '2',
+            floordata: [
+              {
+                room: '01',
+                status: '闲置'
+              },
+              {
+                room: '02',
+                status: '闲置'
+              },
+              {
+                room: '03',
+                status: '闲置'
+              },
+              {
+                room: '04',
+                status: '闲置'
+              }
+
+            ]
+          },
         },
         {
-          floor: '5',
+          floor: {
+            id: '3',
+            floordata: [
+              {
+                room: '01',
+                status: '闲置'
+              },
+              {
+                room: '02',
+                status: '闲置'
+              },
+              {
+                room: '03',
+                status: '闲置'
+              },
+              {
+                room: '04',
+                status: '闲置'
+              }
+
+            ]
+          },
         },
         {
-          floor: '6',
+          floor: {
+            id: '4',
+            floordata: [
+              {
+                room: '01',
+                status: '闲置'
+              },
+              {
+                room: '02',
+                status: '闲置'
+              },
+              {
+                room: '03',
+                status: '闲置'
+              },
+              {
+                room: '04',
+                status: '闲置'
+              }
+
+            ]
+          },
         },
         {
-          floor: '7',
+          floor: {
+            id: '5',
+            floordata: [
+              {
+                room: '01',
+                status: '闲置'
+              },
+              {
+                room: '02',
+                status: '闲置'
+              },
+              {
+                room: '03',
+                status: '闲置'
+              },
+              {
+                room: '04',
+                status: '闲置'
+              }
+
+            ]
+          },
         },
         {
-          floor: '8',
+          floor: {
+            id: '6',
+            floordata: [
+              {
+                room: '01',
+                status: '闲置'
+              },
+              {
+                room: '02',
+                status: '闲置'
+              },
+              {
+                room: '03',
+                status: '闲置'
+              },
+              {
+                room: '04',
+                status: '闲置'
+              }
+
+            ]
+          },
         },
-        {
-          floor: '9',
-        }
-      ],
-      floordata: [
-        { room: '01' },
-        { room: '02' },
-        { room: '03' },
-        { room: '04' },
-        { room: '05' },
-        { room: '06' },
-        { room: '07' },
-        { room: '08' },
-        { room: '09' },
       ]
     }
   },
@@ -138,6 +348,13 @@ export default {
       //     })
     },
 
+    openModal () {
+      this.opened = true
+      setTimeout(() => {
+        location.href = this.name
+      }, 3000)
+    },
+
     getStatusClass (status) {
       return {
         'room-rent-out': status === '出租',
@@ -145,6 +362,76 @@ export default {
         'room-self-use': status === '自用'
       }
     },
+
+    getQuery (key, value) {
+      let obj = {}
+      obj[key] = value
+      return obj
+    },
+
+
+    getQuery (key, value) {
+      let obj = {}
+      obj[key] = value
+      return obj
+    },
+
+    getRoom (index) {
+      return index < 10 ? '0' + index : index
+    },
+
+    scrollFixed (e) {
+      if (this.ignoreScrollEvent) {
+        this.ignoreScrollEvent = false
+        return
+      }
+      this.updateScrollTop(this.$refs.fixedScrollContainer, this.$refs.bodyScrollContainer)
+      this.syncScrollTop(this.$refs.fixedScrollContainer, this.$refs.bodyScrollContainer)
+    },
+
+    scrollBody (e) {
+      if (this.ignoreScrollEvent) {
+        this.ignoreScrollEvent = false
+        return
+      }
+      this.updateScrollTop(this.$refs.bodyScrollContainer, this.$refs.fixedScrollContainer)
+      this.syncScrollTop(this.$refs.fixedScrollContainer, this.$refs.bodyScrollContainer)
+    },
+
+    syncScrollTop: _.debounce(function syncScrollTop (target, relate) {
+      this.updateScrollTop(target, relate)
+    }, 100),
+
+    updateScrollTop (target, relate) {
+      this.ignoreScrollEvent = true
+      relate.scrollTop = target.scrollTop
+    },
+
+
+
+    touchEvents () {
+      document.body.addEventListener('touchstart', (e) => {
+        this.startY = e.touches[0].pageY
+      })
+      document.body.addEventListener('touchmove', this._stopIosRubber, { passive: false })
+    },
+
+    _stopIosRubber (event) {
+      const endY = event.touches[0].pageY
+      if (endY > this.startY && window.scrollTop <= 0) {
+        event.preventDefault()
+      }
+      if (endY < this.startY && (window.scrollTop + window.innerHeight) >= document.body.scrollHeight) {
+        event.preventDefault()
+      }
+    }
+  },
+
+  destroyed () {
+    document.body.removeEventListener('touchmove', this._stopIosRubber, { passive: false })
+    document.body.removeEventListener('touchstart', (e) => {
+      this.startY = e.touches[0].pageY
+    })
   }
 }
 </script>
@@ -207,15 +494,15 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  width: 100%;
+  width: 2.1rem;
 }
 
 .fixed-table table {
-  width: 100%;
+  width: 2.1rem;
 }
 
 .normal-table {
-  width: 3.245rem;
+  width: 2.1rem;
 }
 
 .scroll-container {
@@ -225,7 +512,7 @@ export default {
 
 .fixed-table > .scroll-container {
   display: flex;
-  width: 100%;
+  width: 3.245rem;
   height: 100%;
   overflow-y: auto;
 }
@@ -238,7 +525,6 @@ export default {
 .fixed-table > .scroll-container td {
   padding-left: 0.4rem;
   text-align: left;
-  width: 1.6rem;
 }
 
 .body-table-wrapper {
@@ -291,7 +577,6 @@ tr:last-child {
 td {
   height: 2.75rem;
   padding-left: 0.4rem;
-  text-align: left;
   white-space: nowrap;
   text-align: center;
 }
@@ -391,4 +676,41 @@ td:first-child {
   margin: 1.2rem 0 1.6rem;
   border-radius: 0.3rem;
 }
+
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0,0,0,.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal > .content {
+  width: 12.5rem;
+  height: 5rem;
+  font-size: .7rem;
+  color: #8d8d8d;
+  text-align: center;
+  background-color: white;
+  border-radius: .3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal > .content > p {
+  line-height: 1.5;
+}
+
 </style>
