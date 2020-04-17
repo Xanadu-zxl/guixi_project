@@ -103,9 +103,12 @@ export default {
   justify-content: space-between;
 }
 
+
 .icon-icon_dong {
-  background: url('~@/assets/font/icon_dong.svg') no-repeat;
-  height: 1.25rem;
+  background-image: linear-gradient(to right, #f08200, #f45e06);
+  -webkit-background-clip: text;
+  text-align: left;
+  -webkit-text-fill-color: transparent;
 }
 
 .building-name {
