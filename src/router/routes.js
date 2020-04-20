@@ -21,11 +21,11 @@ export default [
     name: 'company',
     component: () => import(/* webpackChunkName:'company' */'@/components/company')
   },
-  // {
-  //   path: '/pdf',
-  //   name: 'pdf',
-  //   component: () => import(/* webpackChunkName:'pdf' */'@/components/pdf')
-  // },
+  {
+    path: '/pdf',
+    name: 'pdf',
+    component: () => import(/* webpackChunkName:'pdf' */'@/components/pdf')
+  },
   {
     path: '/enterprise',
     name: 'enterprise',
