@@ -1,72 +1,77 @@
 <template>
-  <home-header :companyName="baseCompany" class="bg">
-    <template slot="communityBreadcrumns">
-      <div class="description">{{ baseDescription }}</div>
-    </template>
-    <template slot="fieldsList">
-      <div class="company-body">
-        <div class="head">
-          <div class="title">{{ company }}</div>
-          <button @click="goToUrl(companyQueryUrl)">企业自查上报</button>
-        </div>
-        <div class="list">
-          <div class="list-item">
-            <div class="left-head">治安责任书</div>
-            <div class="right-body">
-              <File
-                :fileName="information.public_security_responsibility_letter"
-                :responseUrl="responseUrl"
-                @fileClicked="fileClickedFunc"
-              />
-            </div>
+  <div>
+    <home-header :companyName="baseCompany" class="bg">
+      <template slot="communityBreadcrumns">
+        <div class="description">{{ baseDescription }}</div>
+      </template>
+      <template slot="fieldsList">
+        <div class="company-body">
+          <div class="head">
+            <div class="title">{{ company }}</div>
+            <button @click="goToUrl(companyQueryUrl)">企业自查上报</button>
           </div>
-          <div class="list-item">
-            <div class="left-head">
-              <div class="title">花名册</div>
-              <button @click="goToUrl(updateUrl)" class="up-button">更新</button>
+          <div class="list">
+            <div class="list-item">
+              <div class="left-head">治安责任书</div>
+              <div class="right-body">
+                <File
+                  :fileName="information.public_security_responsibility_letter"
+                  @fileClicked="fileClickedFunc"
+                />
+              </div>
             </div>
-            <div class="right-body">
-              <File
-                :fileName="information.roster"
-                :responseUrl="responseUrl"
-                @fileClicked="fileClickedFunc"
-              />
+            <div class="list-item">
+              <div class="left-head">
+                <div class="title">花名册</div>
+                <button @click="goToUrl(updateUrl)" class="up-button">更新</button>
+              </div>
+              <div class="right-body">
+                <File
+                  :fileName="information.roster"
+                  @fileClicked="fileClickedFunc"
+                />
+              </div>
             </div>
-          </div>
-          <div class="list-item">
-            <div class="left-head">登记表</div>
-            <div class="right-body">
-              <File
-                :fileName="information.registration_form"
-                :responseUrl="responseUrl"
-                @fileClicked="fileClickedFunc"
-              />
+            <div class="list-item">
+              <div class="left-head">登记表</div>
+              <div class="right-body">
+                <File
+                  :fileName="information.registration_form"
+                  @fileClicked="fileClickedFunc"
+                />
+              </div>
             </div>
-          </div>
-          <div class="list-item">
-            <div class="left-head">单位调查表</div>
-            <div class="right-body">
-              <File
-                :fileName="information.work_unit_questionnaire"
-                :responseUrl="responseUrl"
-                @fileClicked="fileClickedFunc"
-              />
+            <div class="list-item">
+              <div class="left-head">单位调查表</div>
+              <div class="right-body">
+                <File
+                  :fileName="information.work_unit_questionnaire"
+                  @fileClicked="fileClickedFunc"
+                />
+              </div>
             </div>
-          </div>
-          <div class="list-item">
-            <div class="left-head">网格员工作痕迹</div>
-            <div class="right-body">
-              <File
-                :fileName="information.grid_work_traces"
-                :responseUrl="responseUrl"
-                @fileClicked="fileClickedFunc"
-              />
+            <div class="list-item">
+              <div class="left-head">网格员工作痕迹</div>
+              <div class="right-body">
+                <File
+                  :fileName="information.grid_work_traces"
+                  @fileClicked="fileClickedFunc"
+                />
+              </div>
             </div>
           </div>
         </div>
+      </template>
+    </home-header>
+    <div class="modal" v-if="opened">
+      <div @click.stop class="content">
+        <button @click="fileClickedFunc">退出</button>
+        <!--  -->
+        <!--  -->
+        <iframe :src="url" frameborder="0" ></iframe>
       </div>
-    </template>
-  </home-header>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -86,14 +91,16 @@ export default {
     return {
       company: '',
       responseUrl: '',
-      roster:'',
-      companyQueryUrl:'http://scldrk.com:9080/',
+      roster: '',
+      opened: false,
+      // showFiles:[],
+      companyQueryUrl: 'http://scldrk.com:9080/',
       information: {
-        public_security_responsibility_letter: '111.png',
-        roster:'1q1.word',
-        registration_form:'1q1.png',
-        work_unit_questionnaire:'1q1.xlsx',
-        grid_work_traces:'1q1.pdf',
+        public_security_responsibility_letter: 'http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf',
+        roster: '@/assets/pad测试.pdf',
+        registration_form: 'http://fs.yqfw.cdyoue.com/FsavMuamm-3wKHP2Gfi1MmdkUc7K',
+        work_unit_questionnaire: '1q1.xlsx',
+        grid_work_traces: '1q1.pdf',
       },
       // doRequestQueryString: `company=${this.getQueryValue()}`,
       authorize: true,
@@ -113,7 +120,6 @@ export default {
     document.title = '一牌一簿'
     let query = this.$route.query
     this.company = query.company
-
   },
 
   computed: {
@@ -127,45 +133,50 @@ export default {
       location.href = url
     },
     fileClickedFunc (fileName) {
-      axios
-        .get(
-          `https://gxzh.cdht.gov.cn/guixi_app/enterprise?company=`,
-          {
-            // headers: {
-            //   Authorization:
-            //     '7372dee4ff2e6b3876e3b386a336a9171444fba5d3a1e5ae3e23c91d92bb68c6:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lc3BhY2VfaWQiOjF9.WXenxuBIxXEgy_YSmk-PRoElIK7f_gP995N5vdCqSAo'
-            // }
-          }
-        )
-        .then(res => {
-          const response = _.find(
-            res.data,
-            item => item.id === this.information.response_id
-          )
-          const mappedValues = response.mapped_values
-          switch (fileName) {
-            case this.information.public_security_responsibility_letter:
-              this.showFiles =
-                mappedValues.public_security_responsibility_letter.value
-              break
-            case this.information.roster:
-              this.showFiles = mappedValues.roster.value
-              break
-            case this.information.registration_form:
-              this.showFiles = mappedValues.registration_form.value
-              break
-            case this.information.work_unit_questionnaire:
-              this.showFiles = mappedValues.work_unit_questionnaire.value
-              break
-            case this.information.grid_work_traces:
-              this.showFiles = mappedValues.grid_work_traces.value
-              break
-            default:
-              this.showFiles = null
-          }
-          this.filePreviewShow = true
-        })
+      this.url = fileName
+      this.opened = !this.opened
+      console.log(fileName)
+      console.log(this.url)
     },
+
+      // axios
+      //   .get(
+      //     `https://gxzh.cdht.gov.cn/guixi_app/enterprise?company=`,
+      //     {
+      //       // headers: {
+      //       //   Authorization:
+      //       //     '7372dee4ff2e6b3876e3b386a336a9171444fba5d3a1e5ae3e23c91d92bb68c6:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lc3BhY2VfaWQiOjF9.WXenxuBIxXEgy_YSmk-PRoElIK7f_gP995N5vdCqSAo'
+      //       // }
+      //     }
+      //   )
+      //   .then(res => {
+      //     const response = _.find(
+      //       res.data,
+      //       item => item.id === this.information.response_id
+      //     )
+      //     const mappedValues = response.mapped_values
+      //     switch (fileName) {
+      //       case this.information.public_security_responsibility_letter:
+      //         this.showFiles =
+      //           mappedValues.public_security_responsibility_letter.value
+      //         break
+      //       case this.information.roster:
+      //         this.showFiles = mappedValues.roster.value
+      //         break
+      //       case this.information.registration_form:
+      //         this.showFiles = mappedValues.registration_form.value
+      //         break
+      //       case this.information.work_unit_questionnaire:
+      //         this.showFiles = mappedValues.work_unit_questionnaire.value
+      //         break
+      //       case this.information.grid_work_traces:
+      //         this.showFiles = mappedValues.grid_work_traces.value
+      //         break
+      //       default:
+      //         this.showFiles = null
+      //     }
+      //     this.filePreviewShow = true
+      //   })
     // doRequst () {
     //   axios.get(this.baseUrl + 'company?' + this.doRequestQueryString)
     //     .then(res => {
@@ -178,33 +189,10 @@ export default {
     //       }
     //     })
     //     .catch(err => { console.log(err) })
-  },
-  athorizedFunc () {
-
-  },
-  getRequestQueryString () {
-    // var object = this.parseStringToObject(this.getQueryString())
-    // if (object.code) {
-    //   delete object.code
-    // }
-    // return Object.keys(object).map(function (key) { return `${key}=${object[key]}` }).join('=')
-  },
-  parseStringToObject (string) {
-    // var params = {}
-    // var arr = string.split('&')
-    // for (var i = 0, l = arr.length; i < l; i++) {
-    //   var a = arr[i].split('=')
-    //   params[a[0]] = a[1]
-    // }
-    // return params
-  },
-  getQueryValue () {
-    // return this.parseStringToObject(this.getRequestQueryString()).company
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .bg {
   position: absolute;
@@ -340,5 +328,55 @@ export default {
 .layer-download {
   width: 1.05rem;
   height: 1.05rem;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal > .content {
+  width: 90%;
+  height: 80%;
+  font-size: 0.7rem;
+  color: #8d8d8d;
+  text-align: center;
+  background-color: white;
+  border-radius: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 1.6875rem;
+
+}
+
+.modal > .content > button {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  width: 40px;
+  height: 20px;
+  border-radius: 5px;
+}
+.modal > .content > iframe {
+  height: 43.75rem;
+  border-radius: .1875rem;
+}
+
+.modal > .content > p {
+  line-height: 1.5;
 }
 </style>
