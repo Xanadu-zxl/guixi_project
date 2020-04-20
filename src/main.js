@@ -4,8 +4,14 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import './style/common.css'
+import { Modal, Table } from 'view-design';
+// import 'view-design/dist/styles/iview.css';
 
 
+
+
+Vue.component('Modal', Modal);
+Vue.component('Table', Table);
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
