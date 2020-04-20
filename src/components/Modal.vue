@@ -36,11 +36,13 @@ export default {
 
   methods: {
     close () {
-      this.opened = false
-    },
-
-    open () {
       this.opened = true
+      console.log('11ww1')
+    },
+    open () {
+      this.opened = false
+      console.log(opened)
+
     }
   }
 }
