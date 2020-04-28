@@ -1,17 +1,24 @@
 <template>
-<div>
-  <h1>404</h1>
-  <h2>抱歉，没有找到页面！！</h2>
-  <h3>:(</h3>
-</div>
+  <ul>
+    <li :key="user" v-for="user in users">{{ user }}</li>
+  </ul>
 </template>
-
 <script>
+import { fetch } from '../lib/tools'
 export default {
-
-}
+  data () {
+    return {
+      users: []
+    }
+  },
+  mounted () {
+    var self = this;
+    fetch()
+      .then(res => {
+        res.data.forEach(param => {
+          self.users.push(param)
+        })
+      })
+  }
+};
 </script>
-
-<style>
-
-</style>
