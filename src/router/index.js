@@ -10,5 +10,6 @@ Vue.prototype.baseDescription = guixiVue.baseDescription
 
 
 export default new Router({
+  mode: 'history',
   routes
 })
