@@ -25,7 +25,7 @@ import HomeHeader from './pages/header'
 export default {
   data () {
     return {
-      name: '完美小区',
+      name: '南晶国际',
       homes: [
         {
           id: 1,

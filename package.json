@@ -10,8 +10,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "babel-runtime": "^6.26.0",
     "pdfjs-dist": "^2.3.200",
+    "pg": "^8.0.2",
     "view-design": "^4.2.0",
     "vue": "^2.5.2",
     "vue-pdf": "^4.0.8",

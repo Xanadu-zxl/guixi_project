@@ -2,7 +2,9 @@
   <home-header :companyName="baseCompany" class="bg">
     <template slot="communityBreadcrumns">
       <div class="community-breadcrumns">
-        <router-link :to="{ name: 'home',query:{ name: name, building: unit}}">{{this.$route.query.name}}</router-link>&gt;
+        <router-link
+          :to="{ name: 'home',query:{ name: name, building: unit}}"
+        >{{this.$route.query.name}}</router-link>&gt;
         <span>{{ this.$route.query.building }}栋</span>
       </div>
     </template>
@@ -25,7 +27,7 @@
 
 <script>
 import HomeHeader from './pages/header'
-// import axios from 'axios'
+import axios from 'axios'
 // import Mixin from './Mixin'
 
 export default {
@@ -38,7 +40,7 @@ export default {
       name: '',
       routes: '',
       unit: '',
-      query:'',
+      query: '',
       buildings: [{
         id: 1,
         building: '1栋',
@@ -73,6 +75,18 @@ export default {
       this.name = query.name
       this.unit = query.building
       console.log(query)
+      // axios.get("http://127.0.0.1:7000/unit?home=" + '\'' + this.name + '\'')
+      axios.get("http://localhost:7000/unit?home=" + this.name)
+        .then(res => {
+          console.log(res);
+          this.home = res.data.home
+          this.building = res.data.building
+          this.units = res.data.result
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
 
       //     axios.get(this.baseUrl + 'building?' + this.getQueryString())
       //       .then(res => {
@@ -130,13 +144,12 @@ export default {
   justify-content: space-between;
 }
 
-.icon-icon_danyuan {  
+.icon-icon_danyuan {
   background-image: linear-gradient(to right, #f08200, #f45e06);
   -webkit-background-clip: text;
   background-clip: text;
   text-align: left;
   -webkit-text-fill-color: transparent;
-
 }
 
 .building-name {
