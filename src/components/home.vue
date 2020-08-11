@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import HomeHeader from './pages/header'
 export default {
   data () {
@@ -51,8 +52,10 @@ export default {
     // HomeContent
   },
   created () {
-    // this.doRequest()
     document.title = '出租房屋公示'
+    axios.get('api/person').then((res) => {
+      console.log(res)
+    })
   },
 }
 </script>
