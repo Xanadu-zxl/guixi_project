@@ -20,11 +20,6 @@ export default [
     component: () => import(/* webpackChunkName:'company' */'@/components/company')
   },
   {
-    path: '/pdf',
-    name: 'pdf',
-    component: () => import(/* webpackChunkName:'pdf' */'@/components/pdf')
-  },
-  {
     path: '/enterprise',
     name: 'enterprise',
     component: () => import(/* webpackChunkName:'enterprise' */'@/components/enterprise')
